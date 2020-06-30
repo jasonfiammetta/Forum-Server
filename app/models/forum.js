@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const postSchema = require('./post.js')
 
 const forumSchema = new mongoose.Schema({
   title: {
@@ -9,14 +10,7 @@ const forumSchema = new mongoose.Schema({
   //   type: String,
   //   required: true
   // },
-  posts: [{
-    type: String,
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    }
-  }],
+  posts: [postSchema],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

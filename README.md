@@ -6,7 +6,7 @@ An Express.js API for a forum app using MongoDB and Mongoose.
 
 I want to create an app where Users can talk to each other by posting on a Forum.
 
-Users can sign in with a secure password, and can sign out manually, or exit the page.
+Users can log in with a secure password, and can log out manually, or exit the page.
 Users can send messages to a forum and read messages from a forum.
 Users can delete their accounts.
 Users can edit their own posts.
@@ -16,7 +16,6 @@ Users can create new forum boards.
 ## Structure
 
 Structure of the app.
-
 
 
 ### API
@@ -30,6 +29,6 @@ Example curl scripts are included in [`curl-scripts`](curl-scripts).
 | Verb   | URI Pattern            | Controller#Action |
 |--------|------------------------|-------------------|
 | POST   | `/sign-up`             | `users#signup`    |
-| POST   | `/sign-in`             | `users#signin`    |
+| POST   | `/log-in`             | `users#login`    |
 | PATCH  | `/change-password/` | `users#changepw`  |
-| DELETE | `/sign-out/`        | `users#signout`   |
+| DELETE | `/log-out/`        | `users#logout`   |

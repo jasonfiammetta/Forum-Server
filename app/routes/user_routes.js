@@ -5,11 +5,8 @@ const crypto = require('crypto')
 const passport = require('passport')
 // bcrypt docs: https://github.com/kelektiv/node.bcrypt.js
 const bcrypt = require('bcrypt')
-
-// see above for explanation of "salting", 10 rounds is recommended
 const bcryptSaltRounds = 10
 
-// pull in error types and the logic to handle them and set status codes
 const errors = require('../../lib/custom_errors')
 
 const BadParamsError = errors.BadParamsError
@@ -25,13 +22,14 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-// SIGN UP
-// POST /sign-up
+router.get('/users', (req, res, next) => {
+  User.find()
+    .then(users => res.json({ users: users }, null, 2))
+    .catch(console.error)
+})
+
 router.post('/sign-up', (req, res, next) => {
-  // start a promise chain, so that any errors will pass to `handle`
   Promise.resolve(req.body.credentials)
-    // reject any requests where `credentials.password` is not present, or where
-    // the password is an empty string
     .then(credentials => {
       if (!credentials ||
           !credentials.password ||
@@ -53,13 +51,10 @@ router.post('/sign-up', (req, res, next) => {
     // send the new user object back with status 201, but `hashedPassword`
     // won't be send because of the `transform` in the User model
     .then(user => res.status(201).json({ user: user.toObject() }))
-    // pass any errors along to the error handler
     .catch(next)
 })
 
-// SIGN IN
-// POST /sign-in
-router.post('/sign-in', (req, res, next) => {
+router.post('/log-in', (req, res, next) => {
   const pw = req.body.credentials.password
   let user
 
@@ -129,7 +124,7 @@ router.patch('/change-password', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-router.delete('/sign-out', requireToken, (req, res, next) => {
+router.delete('/log-out', requireToken, (req, res, next) => {
   // create a new random token for the user, invalidating the current one
   req.user.token = crypto.randomBytes(16)
   // save the token and respond with 204

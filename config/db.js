@@ -1,9 +1,6 @@
 'use strict'
 
-// creating a base name for the mongodb
 const mongooseBaseName = 'forum-app-server'
-
-// create the mongodb uri for development and test
 const database = {
   development: `mongodb://localhost/${mongooseBaseName}-development`,
   test: `mongodb://localhost/${mongooseBaseName}-test`

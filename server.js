@@ -29,17 +29,16 @@ const clientDevPort = 7165
 // use createIndex instead of deprecated ensureIndex
 mongoose.connect(db, {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
   useCreateIndex: true
 })
 
-// instantiate express application object
 const app = express()
 
 // set CORS headers on response from this API using the `cors` NPM package
 // `CLIENT_ORIGIN` is an environment variable that will be set on Heroku
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || `http://localhost:${clientDevPort}` }))
 
-// define port for API to run on
 const port = process.env.PORT || serverDevPort
 
 // this middleware makes it so the client can use the Rails convention
@@ -64,15 +63,11 @@ app.use(requestLogger)
 app.use(forumRoutes)
 app.use(userRoutes)
 
-// register error handling middleware
-// note that this comes after the route middlewares, because it needs to be
-// passed any error messages from them
+// register error handler last
 app.use(errorHandler)
 
-// run API on designated port (4741 in this case)
 app.listen(port, () => {
   console.log('listening on port ' + port)
 })
 
-// needed for testing
 module.exports = app

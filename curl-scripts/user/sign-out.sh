@@ -1,7 +1,7 @@
 #!/bin/bash
 
 API="http://localhost:4741"
-URL_PATH="/sign-out"
+URL_PATH="/log-out"
 
 curl "${API}${URL_PATH}/" \
   --include \

@@ -110,10 +110,10 @@ describe('Users', () => {
     })
   })
 
-  describe('POST /sign-in', () => {
+  describe('POST /log-in', () => {
     it('should return a token when given valid credentials', done => {
       chai.request(server)
-        .post('/sign-in')
+        .post('/log-in')
         .send(user)
         .end((e, res) => {
           res.should.have.status(201)
@@ -184,7 +184,7 @@ describe('Users', () => {
         .end((e, res) => {
           res.should.have.status(204)
           chai.request(server)
-            .post('/sign-in')
+            .post('/log-in')
             .send(updatedUser)
             .end((e, res) => {
               res.should.have.status(201)
@@ -196,10 +196,10 @@ describe('Users', () => {
     })
   })
 
-  describe('DELETE /sign-out', () => {
+  describe('DELETE /log-out', () => {
     it('returns 204', done => {
       chai.request(server)
-        .delete('/sign-out')
+        .delete('/log-out')
         .set('Authorization', `Bearer ${token}`)
         .end((e, res) => {
           res.status.should.eql(204)
