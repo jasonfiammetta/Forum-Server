@@ -87,7 +87,7 @@ router.post('/log-in', (req, res, next) => {
     })
     .then(user => {
       // return status 201, the email, and the new token
-      res.status(201).json({ user: user.toObject() })
+      res.status(201).json(user.toObject())
     })
     .catch(next)
 })
@@ -129,6 +129,12 @@ router.delete('/log-out', requireToken, (req, res, next) => {
   req.user.token = crypto.randomBytes(16)
   // save the token and respond with 204
   req.user.save()
+    .then(() => res.sendStatus(204))
+    .catch(next)
+})
+
+router.delete('/delete-account', requireToken, (req, res, next) => {
+  req.user.deleteOne()
     .then(() => res.sendStatus(204))
     .catch(next)
 })
