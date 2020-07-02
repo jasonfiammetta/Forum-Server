@@ -4,8 +4,9 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 // require route files
-const forumRoutes = require('./app/routes/forum_routes')
 const userRoutes = require('./app/routes/user_routes')
+const forumRoutes = require('./app/routes/forum_routes')
+const postRoutes = require('./app/routes/post_routes')
 
 // require middleware
 const errorHandler = require('./lib/error_handler')
@@ -62,6 +63,7 @@ app.use(requestLogger)
 // register route files
 app.use(forumRoutes)
 app.use(userRoutes)
+app.use(postRoutes)
 
 // register error handler last
 app.use(errorHandler)

@@ -8,26 +8,28 @@ const requireOwnership = customErrors.requireOwnership
 const requireToken = passport.authenticate('bearer', { session: false })
 
 const Forum = require('../models/forum')
-const Post = require('../models/post')
-
+// const Post = require('../models/post')
 
 const router = express.Router()
 
-router.post('forums/:id', requireToken, (req, res, next) => {
+router.post('/forums/:id', requireToken, (req, res, next) => {
+  let post
   Forum.findById(req.params.id)
     .then(handle404)
     .then(forum => {
-      forum.posts.push(makePost(req.body.post))
+      post = makePost(req.body.post, req.user)
+      forum.posts.push(post)
       return forum
     })
     .then(forum => forum.save())
+    .then(_ => res.status(201).json(post))
     .catch(next)
 })
 
-const makePost = function (post) {
+const makePost = function (post, user) {
   return {
     body: post.body,
-    author: post.author,
+    author: user.id,
     forum: post.forum
   }
 }
