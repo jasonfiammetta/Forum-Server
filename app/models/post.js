@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
 const postSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true // Won't need title for chat
-  },
+  // title: {
+  //   type: String,
+  //   required: true // Won't need title for chat
+  // },
   body: {
     type: String,
     required: true

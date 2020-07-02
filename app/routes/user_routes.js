@@ -24,7 +24,9 @@ const router = express.Router()
 
 router.get('/users', (req, res, next) => {
   User.find()
-    .then(users => res.json({ users: users }, null, 2))
+    .then(users => {
+console.log('get users', { users: users })
+      res.json({ users: users }, null, 2)})
     .catch(console.error)
 })
 
@@ -50,7 +52,9 @@ router.post('/sign-up', (req, res, next) => {
     .then(user => User.create(user))
     // send the new user object back with status 201, but `hashedPassword`
     // won't be send because of the `transform` in the User model
-    .then(user => res.status(201).json({ user: user.toObject() }))
+    .then(user => {
+console.log('sign-up', { user: user.toObject() })
+      res.status(201).json({ user: user.toObject() })})
     .catch(next)
 })
 
@@ -87,7 +91,8 @@ router.post('/log-in', (req, res, next) => {
     })
     .then(user => {
       // return status 201, the email, and the new token
-      res.status(201).json(user.toObject())
+      console.log('log-in', { user: user.toObject() })
+      res.status(201).json({ user: user.toObject() })
     })
     .catch(next)
 })
