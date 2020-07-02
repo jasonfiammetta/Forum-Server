@@ -19,6 +19,7 @@ const router = express.Router()
 router.get('/forums', (req, res, next) => {
   Forum.find()
     .populate('owner')
+    .populate('posts.author')
     .then(forums => {
       return forums.map(forum => forum.toObject())
     })
@@ -28,7 +29,8 @@ router.get('/forums', (req, res, next) => {
 
 router.get('/forums/:id', (req, res, next) => {
   Forum.findById(req.params.id)
-    // .populate()
+    .populate('owner')
+    .populate('posts.author')
     .then(handle404)
     .then(forum => res.status(200).json({ forum: forum.toObject() }))
     .catch(next)
