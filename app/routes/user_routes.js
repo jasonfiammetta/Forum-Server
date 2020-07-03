@@ -24,9 +24,8 @@ const router = express.Router()
 
 router.get('/users', (req, res, next) => {
   User.find()
-    .then(users => {
-console.log('get users', { users: users })
-      res.json({ users: users }, null, 2)})
+    .then(users =>
+      res.json({ users: users }, null, 2))
     .catch(console.error)
 })
 
@@ -50,11 +49,12 @@ router.post('/sign-up', (req, res, next) => {
     })
     // create user with provided email and hashed password
     .then(user => User.create(user))
-    // send the new user object back with status 201, but `hashedPassword`
-    // won't be send because of the `transform` in the User model
     .then(user => {
-console.log('sign-up', { user: user.toObject() })
-      res.status(201).json({ user: user.toObject() })})
+      const token = crypto.randomBytes(16).toString('hex')
+      user.token = token
+      return user.save()
+    })
+    .then(user => res.status(201).json({ user: user.toObject() }))
     .catch(next)
 })
 
@@ -65,11 +65,9 @@ router.post('/log-in', (req, res, next) => {
   // find a user based on the email that was passed
   User.findOne({ email: req.body.credentials.email })
     .then(record => {
-      // if we didn't find a user with that email, send 401
       if (!record) {
         throw new BadCredentialsError()
       }
-      // save the found user outside the promise chain
       user = record
       // `bcrypt.compare` will return true if the result of hashing `pw`
       // is exactly equal to the hashed password stored in the DB
@@ -81,7 +79,6 @@ router.post('/log-in', (req, res, next) => {
         // the token will be a 16 byte random hex string
         const token = crypto.randomBytes(16).toString('hex')
         user.token = token
-        // save the token to the DB as a property on user
         return user.save()
       } else {
         // throw an error to trigger the error handler and end the promise chain
