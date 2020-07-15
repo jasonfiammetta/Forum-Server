@@ -65,7 +65,9 @@ router.delete('/forums/:id', requireToken, (req, res, next) => {
   Forum.findById(req.params.id)
     .then(handle404)
     .then(forum => {
+      console.log('checking ownership')
       requireOwnership(req, forum)
+      console.log('deleting')
       forum.deleteOne()
     })
     .then(() => res.sendStatus(204))
