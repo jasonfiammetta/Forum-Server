@@ -12,7 +12,6 @@ I have created an app where Users can talk to each other by posting on a Forum.
 ## Technologies Used
 
 JavaScript  
-HTML   
 Node  
 Express  
 Mongoose/MongoDB  
